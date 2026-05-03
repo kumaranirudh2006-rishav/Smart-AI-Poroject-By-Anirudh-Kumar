@@ -1,0 +1,45 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Lost & Found</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="app.css">
+  <script>
+    async function sendMessage() {
+      const input = document.getElementById("input");
+      const msg = input.value;
+      if (!msg) return;
+
+      const messages = document.getElementById("messages");
+      messages.innerHTML += "<div class='msg'>You: " + msg + "</div>";
+      input.value = "";
+
+      try {
+        const res = await fetch("http://localhost:5000/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: msg })
+        });
+        const data = await res.json();
+        messages.innerHTML += "<div class='msg'>" + data.reply + "</div>";
+      } catch (err) {
+        messages.innerHTML += "<div class='msg'>Error!</div>";
+      }
+    }
+  </script>
+  <script src="Backendapp.js"></script>
+  </head>
+
+  <body>
+    <div class="chat">
+      <h3>SMART AI 🤖</h3>
+      <div class="messages" id="messages"></div>
+      <input id="input" placeholder="Type..." />
+      <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+     </script>
+     </body>
+  </html>
